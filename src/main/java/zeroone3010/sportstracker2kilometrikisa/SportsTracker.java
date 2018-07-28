@@ -14,12 +14,12 @@ import java.lang.System.Logger.Level;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TimeZone;
 import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.toList;
@@ -78,7 +78,8 @@ public final class SportsTracker {
     final List<Workout> workoutList = rawWorkouts.stream()
         .filter(w -> Objects.equals(2, w.get("activityId")))
         .map(w -> new Workout(
-            Instant.ofEpochMilli(Number.class.cast(w.get("startTime")).longValue()).atZone(ZoneId.of("UTC")).toLocalDate(),
+            Instant.ofEpochMilli(Number.class.cast(w.get("startTime")).longValue())
+                .atZone(TimeZone.getDefault().toZoneId()).toLocalDate(),
             Duration.of(Number.class.cast(w.get("totalTime")).longValue(), ChronoUnit.SECONDS),
             new BigDecimal(String.valueOf(w.get("totalDistance"))),
             SportType.fromSportsTrackerId((int) w.get("activityId"))))
