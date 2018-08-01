@@ -4,8 +4,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Locale;
 
 public final class Workout {
+  private static final float MPS_TO_KMPH = 3.6f;
+
   private final LocalDate date;
   private final Duration duration;
   private final BigDecimal totalDistanceInMeters;
@@ -40,8 +43,9 @@ public final class Workout {
 
   @Override
   public String toString() {
-    return String.format("[%s: %s km, %d:%02d:%02d]", date,
+    final float kmph = totalDistanceInMeters.floatValue() / duration.toSeconds() * MPS_TO_KMPH;
+    return String.format(Locale.ROOT, "[%s: %s km, %d:%02d:%02d; %.02f km/h]", date,
         getTotalDistanceInKilometers(),
-        duration.toHours(), duration.toMinutesPart(), duration.toSecondsPart());
+        duration.toHours(), duration.toMinutesPart(), duration.toSecondsPart(), kmph);
   }
 }
