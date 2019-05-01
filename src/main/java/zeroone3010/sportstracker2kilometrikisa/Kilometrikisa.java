@@ -116,14 +116,14 @@ public class Kilometrikisa {
   }
 
   private String convertToPostableKilometers(final Workout workout, final String csrfToken) {
-    return "contest_id=31&" +
+    return "contest_id=38&" +
         "km_amount=" + workout.getTotalDistanceInKilometers() + "&" +
         "km_date=" + workout.getDate() + "&" +
         "csrfmiddlewaretoken=" + csrfToken;
   }
 
   private String convertToPostableMinutes(final Workout workout, final String csrfToken) {
-    return "contest_id=31&" +
+    return "contest_id=38&" +
         "hours=" + workout.getDuration().toHours() + "&" +
         "minutes=" + workout.getDuration().toMinutesPart() + "&" +
         "date=" + workout.getDate() + "&" +
