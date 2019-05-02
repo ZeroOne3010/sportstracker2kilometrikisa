@@ -7,7 +7,6 @@ import jdk.incubator.http.HttpRequest;
 import java.net.InetSocketAddress;
 import java.net.ProxySelector;
 import java.net.URI;
-import java.nio.charset.Charset;
 import java.util.Optional;
 
 final class WebUtil {
