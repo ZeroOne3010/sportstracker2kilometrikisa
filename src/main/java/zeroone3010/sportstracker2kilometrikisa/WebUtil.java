@@ -1,20 +1,16 @@
 package zeroone3010.sportstracker2kilometrikisa;
 
-import jdk.incubator.http.HttpClient;
-import jdk.incubator.http.HttpClient.Redirect;
-import jdk.incubator.http.HttpRequest;
-
 import java.net.InetSocketAddress;
 import java.net.ProxySelector;
 import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
 import java.util.Optional;
 
 final class WebUtil {
   private static final String REFERER_HEADER = "Referer";
   private static final String CONTENT_TYPE_HEADER = "Content-Type";
   public static final String COOKIE_HEADER = "Cookie";
-  public static final String CONNECTION_HEADER = "Connection";
-  public static final String CONNECTION_KEEP_ALIVE = "keep-alive";
   public static final String X_REQUESTED_WITH_HEADER = "X-Requested-With";
 
   private WebUtil() {
@@ -24,7 +20,7 @@ final class WebUtil {
   static HttpRequestBuilderWrapper buildPostRequest(final String uri, final String content) {
     return new HttpRequestBuilderWrapper(baseBuilder(uri)
         .version(HttpClient.Version.HTTP_1_1)
-        .POST(HttpRequest.BodyPublisher.fromString(content))
+        .POST(HttpRequest.BodyPublishers.ofString(content))
     );
   }
 
@@ -43,7 +39,7 @@ final class WebUtil {
         .orElse(ProxySelector.getDefault());
     return HttpClient.newBuilder()
         .proxy(proxy)
-        .followRedirects(Redirect.NEVER)
+        .followRedirects(HttpClient.Redirect.NEVER)
         .build();
   }
 

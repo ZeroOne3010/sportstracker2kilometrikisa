@@ -1,5 +1,5 @@
 module zeroone3010.sportstracker2kilometrikisa {
-  requires jdk.incubator.httpclient;
+  requires java.net.http;
   requires java.scripting;
   requires java.logging;
 }

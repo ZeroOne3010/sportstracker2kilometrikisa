@@ -1,20 +1,17 @@
 package zeroone3010.sportstracker2kilometrikisa;
 
-import jdk.incubator.http.HttpClient;
-import jdk.incubator.http.HttpRequest;
-import jdk.incubator.http.HttpResponse;
-import jdk.incubator.http.HttpResponse.BodyHandler;
-
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static zeroone3010.sportstracker2kilometrikisa.WebUtil.CONNECTION_HEADER;
-import static zeroone3010.sportstracker2kilometrikisa.WebUtil.CONNECTION_KEEP_ALIVE;
 import static zeroone3010.sportstracker2kilometrikisa.WebUtil.COOKIE_HEADER;
 import static zeroone3010.sportstracker2kilometrikisa.WebUtil.X_REQUESTED_WITH_HEADER;
 
@@ -53,9 +50,8 @@ public class Kilometrikisa {
     }
 
     final HttpRequest loginPageRequest = WebUtil.buildGetRequest(LOGIN_PAGE_URL)
-        .header(CONNECTION_HEADER, CONNECTION_KEEP_ALIVE)
         .build();
-    final HttpResponse<String> loginPageResponse = client.send(loginPageRequest, BodyHandler.asString());
+    final HttpResponse<String> loginPageResponse = client.send(loginPageRequest, BodyHandlers.ofString());
     logger.log(Level.DEBUG, loginPageResponse.headers());
     logger.log(Level.DEBUG, loginPageResponse.body());
     String token = extractCsrfToken(loginPageResponse);
@@ -67,7 +63,7 @@ public class Kilometrikisa {
         .contentType(LOGIN_CONTENT_TYPE)
         .header(COOKIE_HEADER, "csrftoken=" + token)
         .build();
-    final HttpResponse<String> loginResponse = client.send(loginRequest, BodyHandler.asString());
+    final HttpResponse<String> loginResponse = client.send(loginRequest, BodyHandlers.ofString());
     logger.log(Level.DEBUG, "Login response headers: " + loginResponse.headers().map());
     logger.log(Level.DEBUG, "Login response body: " + loginResponse.body());
     final String sessionId = extractCookie(loginResponse, "sessionid");
@@ -86,7 +82,7 @@ public class Kilometrikisa {
         .header(X_REQUESTED_WITH_HEADER, "XMLHttpRequest")
         .build();
     logger.log(Level.DEBUG, minuteMessage);
-    final HttpResponse<String> minutePostResponse = client.send(minuteLogPostRequest, BodyHandler.asString());
+    final HttpResponse<String> minutePostResponse = client.send(minuteLogPostRequest, BodyHandlers.ofString());
     logger.log(Level.DEBUG, "Post response body: " + minutePostResponse.body());
 
     if (minutePostResponse.statusCode() != 200) {
@@ -106,7 +102,7 @@ public class Kilometrikisa {
         .header(X_REQUESTED_WITH_HEADER, "XMLHttpRequest")
         .build();
     logger.log(Level.DEBUG, kilometerMessage);
-    final HttpResponse<String> postResponse = client.send(trainingLogPostRequest, BodyHandler.asString());
+    final HttpResponse<String> postResponse = client.send(trainingLogPostRequest, BodyHandlers.ofString());
     logger.log(Level.DEBUG, "Post response body: " + postResponse.body());
 
     if (postResponse.statusCode() != 200) {

@@ -1,10 +1,5 @@
 package zeroone3010.sportstracker2kilometrikisa;
 
-import jdk.incubator.http.HttpClient;
-import jdk.incubator.http.HttpRequest;
-import jdk.incubator.http.HttpResponse;
-import jdk.incubator.http.HttpResponse.BodyHandler;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -12,6 +7,10 @@ import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.math.BigDecimal;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -55,7 +54,7 @@ public final class SportsTracker {
             .referer(LOGIN_REFERER_URL)
             .contentType(LOGIN_CONTENT_TYPE)
             .build();
-    final HttpResponse<String> loginResponse = client.send(loginRequest, BodyHandler.asString());
+    final HttpResponse<String> loginResponse = client.send(loginRequest, BodyHandlers.ofString());
     logger.log(Level.DEBUG, loginResponse.body());
 
     final Pattern sessionKeyPattern = Pattern.compile("\"sessionkey\"\\s*:\\s*\"([^\"]*)\"");
@@ -66,7 +65,7 @@ public final class SportsTracker {
         .referer(WORKOUTS_REFERER_URL)
         .header(AUTHORIZATION_HEADER, sessionKey)
         .build();
-    final HttpResponse<String> workoutsResponse = client.send(workoutsRequest, BodyHandler.asString());
+    final HttpResponse<String> workoutsResponse = client.send(workoutsRequest, BodyHandlers.ofString());
     logger.log(Level.TRACE, workoutsResponse.body());
 
     final ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
