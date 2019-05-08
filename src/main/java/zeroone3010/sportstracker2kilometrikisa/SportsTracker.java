@@ -56,6 +56,9 @@ public final class SportsTracker {
             .build();
     final HttpResponse<String> loginResponse = client.send(loginRequest, BodyHandlers.ofString());
     logger.log(Level.DEBUG, loginResponse.body());
+    if (loginResponse.statusCode() < 200 || loginResponse.statusCode() > 299) {
+      throw new RuntimeException("Error logging in to Sports Tracker, received status code " + loginResponse.statusCode());
+    }
 
     final Pattern sessionKeyPattern = Pattern.compile("\"sessionkey\"\\s*:\\s*\"([^\"]*)\"");
     final String sessionKey = sessionKeyPattern.matcher(loginResponse.body()).results().findFirst().get().group(1);
