@@ -17,3 +17,10 @@ dependencies {
             'org.junit.jupiter:junit-jupiter-engine:5.5.0-M1'
     )
 }
+
+jar {
+  manifest {
+    attributes["Manifest-Version"] = "1.0"
+    attributes["Main-Class"] = "zeroone3010.sportstracker2kilometrikisa.Main"
+  }
+}
