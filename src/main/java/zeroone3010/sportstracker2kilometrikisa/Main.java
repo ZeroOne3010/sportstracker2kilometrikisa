@@ -13,6 +13,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static java.lang.System.Logger;
 import static java.lang.System.getLogger;
@@ -26,6 +27,11 @@ public class Main {
     final String stPass = getProperty("stpass");
     final String kkUser = getProperty("kkuser");
     final String kkPass = getProperty("kkpass");
+    final int daysInPast = Integer.parseInt(getProperty("daysInPast", "0"));
+    if (daysInPast < 0) {
+      throw new IllegalArgumentException("daysInPast must be zero or greater.");
+    }
+    final int daysAltogether = daysInPast + 1; // Include today.
 
     final SportsTracker sportsTracker = new SportsTracker(stUser, stPass);
     final LinkedHashMap<LocalDate, Workout> workouts = sportsTracker.getWorkouts().stream()
@@ -71,9 +77,18 @@ public class Main {
     logger.log(Logger.Level.INFO, "Loaded the following workouts from Sports Tracker: " + workouts);
 
     final Kilometrikisa kilometrikisa = new Kilometrikisa(kkUser, kkPass);
-    final Workout todaysWorkout = workouts.get(LocalDate.now().minusDays(0));
+    IntStream.range(0, daysAltogether).forEach(i -> {
+      final LocalDate date = LocalDate.now().minusDays(i);
+      final Workout workout = workouts.get(date);
+      logger.log(Logger.Level.INFO, "Of those, this one is of " + date + " and will be posted: " + workout);
+      try {
+        kilometrikisa.post(workout);
+      } catch (IOException e) {
+        e.printStackTrace();
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+    });
 
-    logger.log(Logger.Level.INFO, "Of those, this one is today's and will be posted: " + todaysWorkout);
-    kilometrikisa.post(todaysWorkout);
   }
 }
