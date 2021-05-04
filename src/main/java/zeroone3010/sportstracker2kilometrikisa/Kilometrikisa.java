@@ -28,7 +28,7 @@ public class Kilometrikisa {
   private static final String POST_KILOMETERS_URL = BASE_URL + "/contest/log-save/";
   private static final String POST_MINUTES_URL = BASE_URL + "/contest/minute-log-save/";
   private static final String POST_ENTRY_CONTENT_TYPE = "application/x-www-form-urlencoded; charset=UTF-8";
-  private static final String CONTEST_ID = "43";
+  private static final String CONTEST_ID = "45";
 
   private final String user;
   private final String password;
