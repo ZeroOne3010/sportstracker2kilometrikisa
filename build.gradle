@@ -3,13 +3,15 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 
-sourceCompatibility = JavaVersion.VERSION_12
+sourceCompatibility = JavaVersion.VERSION_16
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    implementation 'com.google.code.gson:gson:2.8.6'
+
     testImplementation(
             'org.junit.jupiter:junit-jupiter-api:5.7.0-M1'
     )

@@ -90,8 +90,8 @@ public class Kilometrikisa {
       throw new RuntimeException("Storing minutes failed! '" + minuteMessage + "' resulted in '" + minutePostResponse.body() + "'");
     }
     logger.log(Logger.Level.INFO, "Minutes ("
-        + workout.getDuration().toHours() + ":"
-        + workout.getDuration().toMinutesPart() + ") posted successfully");
+        + workout.duration().toHours() + ":"
+        + workout.duration().toMinutesPart() + ") posted successfully");
   }
 
   private void postKilometers(final Workout workout, final String token, final String sessionId) throws IOException, InterruptedException {
@@ -115,15 +115,15 @@ public class Kilometrikisa {
   private String convertToPostableKilometers(final Workout workout, final String csrfToken) {
     return "contest_id=" + CONTEST_ID + "&" +
         "km_amount=" + workout.getTotalDistanceInKilometers() + "&" +
-        "km_date=" + workout.getDate() + "&" +
+        "km_date=" + workout.date() + "&" +
         "csrfmiddlewaretoken=" + csrfToken;
   }
 
   private String convertToPostableMinutes(final Workout workout, final String csrfToken) {
     return "contest_id=" + CONTEST_ID + "&" +
-        "hours=" + workout.getDuration().toHours() + "&" +
-        "minutes=" + workout.getDuration().toMinutesPart() + "&" +
-        "date=" + workout.getDate() + "&" +
+        "hours=" + workout.duration().toHours() + "&" +
+        "minutes=" + workout.duration().toMinutesPart() + "&" +
+        "date=" + workout.date() + "&" +
         "csrfmiddlewaretoken=" + csrfToken;
   }
 

@@ -1,6 +1,5 @@
 package zeroone3010.sportstracker2kilometrikisa;
 
-import javax.script.ScriptException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -22,7 +21,7 @@ import static java.lang.System.getProperty;
 public class Main {
   private static final Logger logger = getLogger("Main");
 
-  public static void main(final String... args) throws IOException, InterruptedException, ScriptException {
+  public static void main(final String... args) throws IOException, InterruptedException {
     final String stUser = getProperty("stuser");
     final String stPass = getProperty("stpass");
     final String kkUser = getProperty("kkuser");
@@ -35,15 +34,15 @@ public class Main {
 
     final SportsTracker sportsTracker = new SportsTracker(stUser, stPass);
     final LinkedHashMap<LocalDate, Workout> workouts = sportsTracker.getWorkouts().stream()
-        .filter(w -> w.getType() == SportType.CYCLING)
-        .collect(Collectors.groupingBy(Workout::getDate,
-            Collectors.reducing((a, b) -> new Workout(a.getDate(),
-                a.getDuration().plus(b.getDuration()),
-                a.getTotalDistanceInMeters().add(b.getTotalDistanceInMeters()),
-                a.getType())
+        .filter(w -> w.type() == SportType.CYCLING)
+        .collect(Collectors.groupingBy(Workout::date,
+            Collectors.reducing((a, b) -> new Workout(a.date(),
+                a.duration().plus(b.duration()),
+                a.totalDistanceInMeters().add(b.totalDistanceInMeters()),
+                a.type())
             ))).values().stream()
         .map(Optional::get)
-        .sorted(Comparator.comparing(Workout::getDate).reversed())
+        .sorted(Comparator.comparing(Workout::date).reversed())
         .collect(new Collector<Workout, LinkedHashMap<LocalDate, Workout>, LinkedHashMap<LocalDate, Workout>>() {
           @Override
           public Supplier<LinkedHashMap<LocalDate, Workout>> supplier() {
@@ -52,7 +51,7 @@ public class Main {
 
           @Override
           public BiConsumer<LinkedHashMap<LocalDate, Workout>, Workout> accumulator() {
-            return (map, workout) -> map.put(workout.getDate(), workout);
+            return (map, workout) -> map.put(workout.date(), workout);
           }
 
           @Override

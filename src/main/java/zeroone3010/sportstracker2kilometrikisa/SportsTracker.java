@@ -1,12 +1,12 @@
 package zeroone3010.sportstracker2kilometrikisa;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
-import java.math.BigDecimal;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -14,12 +14,11 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
+import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
 
@@ -42,7 +41,7 @@ public final class SportsTracker {
     this.password = password;
   }
 
-  public List<Workout> getWorkouts() throws IOException, InterruptedException, ScriptException {
+  public List<Workout> getWorkouts() throws IOException, InterruptedException {
     Objects.requireNonNull(user, "Sports Tracker username must not be null.");
     Objects.requireNonNull(password, "Sports Tracker password must not be null.");
 
@@ -71,20 +70,19 @@ public final class SportsTracker {
     final HttpResponse<String> workoutsResponse = client.send(workoutsRequest, BodyHandlers.ofString());
     logger.log(Level.TRACE, workoutsResponse.body());
 
-    final ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
-    final Map<String, Object> resultJson = (Map<String, Object>) engine.eval(String.format("JSON.parse('%s')", workoutsResponse.body()));
-
-    final Collection<Map<String, Object>> rawWorkouts = ((Map<String, Map<String, Object>>) resultJson.get("payload")).values();
+    final JsonElement resultJson = JsonParser.parseString(workoutsResponse.body());
+    final JsonArray rawWorkouts = resultJson.getAsJsonObject().getAsJsonArray("payload");
     logger.log(Level.TRACE, rawWorkouts);
 
-    final List<Workout> workoutList = rawWorkouts.stream()
-        .filter(w -> Objects.equals(2, w.get("activityId")))
+    final List<Workout> workoutList = StreamSupport.stream(rawWorkouts.spliterator(), false)
+        .map(JsonElement::getAsJsonObject)
+        .filter(w -> Objects.equals(SportType.CYCLING.getSportsTrackerId(), w.get("activityId").getAsInt()))
         .map(w -> new Workout(
-            Instant.ofEpochMilli(Number.class.cast(w.get("startTime")).longValue())
+            Instant.ofEpochMilli(w.get("startTime").getAsLong())
                 .atZone(TimeZone.getDefault().toZoneId()).toLocalDate(),
-            Duration.of(Number.class.cast(w.get("totalTime")).longValue(), ChronoUnit.SECONDS),
-            new BigDecimal(String.valueOf(w.get("totalDistance"))),
-            SportType.fromSportsTrackerId((int) w.get("activityId"))))
+            Duration.of(w.get("totalTime").getAsLong(), ChronoUnit.SECONDS),
+            w.get("totalDistance").getAsBigDecimal(),
+            SportType.fromSportsTrackerId(w.get("activityId").getAsInt())))
         .collect(toList());
     logger.log(Level.TRACE, workoutList);
     return workoutList;

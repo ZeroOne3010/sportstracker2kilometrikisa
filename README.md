@@ -1,7 +1,7 @@
 Sports Tracker 2 Kilometrikisa
 ==============================
 
-This is a Java 12 application for automatically transferring your cycling statistics from
+This is a Java 16 application for automatically transferring your cycling statistics from
 [Sports Tracker](https://www.sports-tracker.com/) to [Kilometrikisa](https://www.kilometrikisa.fi/).
 
 The application has been updated to support Kilometrikisa 2021.
