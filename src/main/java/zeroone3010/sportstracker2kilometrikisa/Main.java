@@ -81,7 +81,9 @@ public class Main {
       final Workout workout = workouts.get(date);
       logger.log(Logger.Level.INFO, "Of those, this one is of " + date + " and will be posted: " + workout);
       try {
-        kilometrikisa.post(workout);
+        if (workout != null) {
+          kilometrikisa.post(workout);
+        }
       } catch (IOException e) {
         e.printStackTrace();
       } catch (InterruptedException e) {
