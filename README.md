@@ -10,7 +10,7 @@ By default this application finds all of your Sports Tracker cycling entries fro
 sums their kilometers and minutes together, and sends the result to Kilometrikisa. You can also customize
 the number of days to look back with the `daysInPast` command line argument.
 
-Builds with Gradle. Uses no external libraries (besides JUnit 5).
+Builds with Gradle. Uses external GSON and JUnit 5 libraries.
 
 Run with the following parameters:
 
