@@ -91,5 +91,6 @@ public class Main {
       }
     });
 
+    logger.log(Logger.Level.INFO, "You may check your kilometers from here: https://www.kilometrikisa.fi/contest/log/");
   }
 }
