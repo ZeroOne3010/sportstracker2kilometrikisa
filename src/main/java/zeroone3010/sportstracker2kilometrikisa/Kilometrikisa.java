@@ -7,6 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -29,7 +30,7 @@ public class Kilometrikisa {
   private static final String POST_MINUTES_URL = BASE_URL + "/contest/minute-log-save/";
   private static final String POST_ENTRY_CONTENT_TYPE = "application/x-www-form-urlencoded; charset=UTF-8";
 
-  private final KilometrikisaContest contest = new KilometrikisaContest();
+  private final KilometrikisaContest contest = new KilometrikisaContest(LocalDate.now());
 
   private final String user;
   private final String password;

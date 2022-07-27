@@ -4,7 +4,7 @@ Sports Tracker 2 Kilometrikisa
 This is a Java 16 application for automatically transferring your cycling statistics from
 [Sports Tracker](https://www.sports-tracker.com/) to [Kilometrikisa](https://www.kilometrikisa.fi/).
 
-The application has been updated to support Kilometrikisa 2022.
+The application should support any Kilometrikisa that is currently going on, summer or winter.
 
 By default this application finds all of your Sports Tracker cycling entries from the current day,
 sums their kilometers and minutes together, and sends the result to Kilometrikisa. You can also customize
