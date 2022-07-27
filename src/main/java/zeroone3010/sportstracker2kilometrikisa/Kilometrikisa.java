@@ -28,7 +28,8 @@ public class Kilometrikisa {
   private static final String POST_KILOMETERS_URL = BASE_URL + "/contest/log-save/";
   private static final String POST_MINUTES_URL = BASE_URL + "/contest/minute-log-save/";
   private static final String POST_ENTRY_CONTENT_TYPE = "application/x-www-form-urlencoded; charset=UTF-8";
-  private static final String CONTEST_ID = "47";
+
+  private final KilometrikisaContest contest = new KilometrikisaContest();
 
   private final String user;
   private final String password;
@@ -113,14 +114,14 @@ public class Kilometrikisa {
   }
 
   private String convertToPostableKilometers(final Workout workout, final String csrfToken) {
-    return "contest_id=" + CONTEST_ID + "&" +
+    return "contest_id=" + contest.getId() + "&" +
         "km_amount=" + workout.getTotalDistanceInKilometers() + "&" +
         "km_date=" + workout.date() + "&" +
         "csrfmiddlewaretoken=" + csrfToken;
   }
 
   private String convertToPostableMinutes(final Workout workout, final String csrfToken) {
-    return "contest_id=" + CONTEST_ID + "&" +
+    return "contest_id=" + contest.getId() + "&" +
         "hours=" + workout.duration().toHours() + "&" +
         "minutes=" + workout.duration().toMinutesPart() + "&" +
         "date=" + workout.date() + "&" +
