@@ -91,9 +91,10 @@ public class Kilometrikisa {
     if (minutePostResponse.statusCode() != 200) {
       throw new RuntimeException("Storing minutes failed! '" + minuteMessage + "' resulted in '" + minutePostResponse.body() + "'");
     }
-    logger.log(Logger.Level.INFO, "Minutes ("
-        + workout.duration().toHours() + ":"
-        + workout.duration().toMinutesPart() + ") posted successfully");
+    logger.log(Logger.Level.INFO, "Minutes (%d:%02d) posted successfully".formatted(
+        workout.duration().toHours(),
+        workout.duration().toMinutesPart())
+    );
   }
 
   private void postKilometers(final Workout workout, final String token, final String sessionId) throws IOException, InterruptedException {
