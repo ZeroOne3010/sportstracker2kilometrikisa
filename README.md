@@ -1,6 +1,17 @@
 Sports Tracker 2 Kilometrikisa
 ==============================
 
+----
+
+Attention! It seems that Sports Tracker has started to require a CAPTCHA
+when logging in, and they do not seem to offer an API. That is very unfortunate,
+as it prevents this app from working. Not allowing a programmatic access to data
+these days seems like a suicidal decision for a business. You should
+probably start using Strava of some other such service. I'm sorry.
+
+----
+
+
 This is a Java 16 application for automatically transferring your cycling statistics from
 [Sports Tracker](https://www.sports-tracker.com/) to [Kilometrikisa](https://www.kilometrikisa.fi/).
 
