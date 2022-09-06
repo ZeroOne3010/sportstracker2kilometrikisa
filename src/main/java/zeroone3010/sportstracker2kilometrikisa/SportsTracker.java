@@ -26,7 +26,7 @@ public final class SportsTracker {
   private static final Logger logger = System.getLogger("Sports Tracker");
 
   private static final String BASE_URL = "https://api.sports-tracker.com";
-  private static final String LOGIN_URL = BASE_URL + "/apiserver/v1/login?source=javascript";
+  private static final String LOGIN_URL = BASE_URL + "/apiserver/v1/login?source=javascript&captchaToken=WeNeedProperAPI";
   private static final String WORKOUTS_URL = BASE_URL + "/apiserver/v1/workouts?limited=true&limit=20";
   private static final String LOGIN_REFERER_URL = BASE_URL + "/login";
   private static final String WORKOUTS_REFERER_URL = BASE_URL + "/dashboard";
